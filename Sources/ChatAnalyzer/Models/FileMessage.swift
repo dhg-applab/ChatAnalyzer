@@ -1,0 +1,16 @@
+//
+//  FileMessage.swift
+//  
+//
+//  Created by Junpeng Chen on 26.07.23.
+//
+
+import Foundation
+
+struct FileMessage: ChatMessage {
+    let user: String
+    let timestamp: Date
+    let messageType: MessageType
+    let filename: String
+    let fileURL: URL
+}
