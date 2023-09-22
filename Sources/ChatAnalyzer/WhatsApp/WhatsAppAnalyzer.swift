@@ -203,7 +203,7 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         return messageCounts
     }
     
-    public func messageCountByFrequency(frequencies: [Frequency], user: String? = nil, messageType: MessageType? = nil, startTime: Date? = nil, endTime: Date? = nil) throws -> Dictionary<Frequency, [MessageCount]> {
+    public func messageCountByFrequency(frequencies: [Frequency], user: String? = nil, messageType: MessageType? = nil, startTime: Date? = nil, endTime: Date? = nil) throws -> Dictionary<Frequency, [(date: DateComponents, count: Int)]> {
         let filteredData = try self.filterMessage(user: user, messageType: messageType, startTime: startTime, endTime: endTime)
         let calendar = Calendar.current
         
@@ -227,14 +227,14 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         }
         
         // Count the message by each frequency
-        var messageCountsByFrequency = [Frequency: [MessageCount]]()
+        var messageCountsByFrequency = [Frequency: [(date: DateComponents, count: Int)]]()
         for (frequency, dates) in datesByFrequency {
             let messageCounts = dates.reduce(into: [:]) { counts, date in
                 counts[date, default: 0] += 1
             }
                 .sorted { $0.key < $1.key }
                 .map { date, count in
-                    MessageCount(date: date, count: count)
+                    (date: date, count: count)
                 }
             messageCountsByFrequency[frequency] = messageCounts
         }
@@ -242,8 +242,8 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         return messageCountsByFrequency
     }
     
-    public func messageCountByFrequencyByUser(frequencies: [Frequency], messageType: MessageType? = nil, startTime: Date? = nil, endTime: Date? = nil) throws -> Dictionary<String, Dictionary<Frequency, [MessageCount]>> {
-        var messageCounts = [String: [Frequency: [MessageCount]]]()
+    public func messageCountByFrequencyByUser(frequencies: [Frequency], messageType: MessageType? = nil, startTime: Date? = nil, endTime: Date? = nil) throws -> Dictionary<String, Dictionary<Frequency, [(date: DateComponents, count: Int)]>> {
+        var messageCounts = [String: [Frequency: [(date: DateComponents, count: Int)]]]()
         for user in self.uniqueUsers() {
             messageCounts[user] = try self.messageCountByFrequency(frequencies: frequencies, messageType: messageType, startTime: startTime, endTime: endTime)
         }

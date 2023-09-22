@@ -26,8 +26,8 @@ public protocol ChatAnalyzer {
     func messageCountByUser(messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int>
     func messageCountByFrequency(frequency: Frequency, user: String?, messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<DateComponents, Int>
     func messageCountByFrequencyByUser(frequency: Frequency, messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Dictionary<DateComponents, Int>>
-    func messageCountByFrequency(frequencies: [Frequency], user: String?, messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<Frequency, [MessageCount]>
-    func messageCountByFrequencyByUser(frequencies: [Frequency], messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Dictionary<Frequency, [MessageCount]>>
+    func messageCountByFrequency(frequencies: [Frequency], user: String?, messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<Frequency, [(date: DateComponents, count: Int)]>
+    func messageCountByFrequencyByUser(frequencies: [Frequency], messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Dictionary<Frequency, [(date: DateComponents, count: Int)]>>
     func wordCount(removeStopWords: Bool, user: String?, startTime: Date?, endTime: Date?) throws -> Int
     func wordCountByUser(removeStopWords: Bool, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int>
     func uniqueWordCount(removeStopWords: Bool, user: String?, startTime: Date?, endTime: Date?) throws -> Int
