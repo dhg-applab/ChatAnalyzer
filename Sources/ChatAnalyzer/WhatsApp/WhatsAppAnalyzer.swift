@@ -279,7 +279,7 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         return uniqueWordCount
     }
     
-    public func mostCommonWords(n: Int, removeStopWords: Bool = false, user: String?, startTime: Date?, endTime: Date?) throws -> [WordCount] {
+    public func mostCommonWords(n: Int, removeStopWords: Bool = false, user: String?, startTime: Date?, endTime: Date?) throws -> [(word: String, count: Int)] {
         let filteredData = try self.filterMessage(user: user, messageType: .text, startTime: startTime, endTime: endTime)
         let messages = filteredData.map { ($0 as! TextMessage).message }
         let words = try WhatsAppAnalyzer.tokenize(messages: messages, language: self.language, removeStopWords: removeStopWords)
@@ -289,17 +289,16 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         let sortedWordFrequencies = wordCounts
             .sorted { $0.value > $1.value }
             .map { word, count in
-                WordCount(word: word, count: count)
+                (word: word, count: count)
             }
         return Array(sortedWordFrequencies.prefix(n))
     }
     
-    public func mostCommonWordsByUser(n: Int, removeStopWords: Bool = false, startTime: Date?, endTime: Date?) throws -> [UserWordCounts] {
-        var mostCommonWords = [UserWordCounts]()
+    public func mostCommonWordsByUser(n: Int, removeStopWords: Bool = false, startTime: Date?, endTime: Date?) throws -> [(user: String, mostCommonWords: [(word: String, count: Int)])] {
+        var mostCommonWords = [(user: String, mostCommonWords: [(word: String, count: Int)])]()
         for user in self.uniqueUsers() {
-            let wordCounts = try self.mostCommonWords(n: n, removeStopWords: removeStopWords, user: user, startTime: startTime, endTime: endTime)
-            let userWordCoutns = UserWordCounts(user: user, wordCounts: wordCounts)
-            mostCommonWords.append(userWordCoutns)
+            let userMostCommonWords = try self.mostCommonWords(n: n, removeStopWords: removeStopWords, user: user, startTime: startTime, endTime: endTime)
+            mostCommonWords.append((user: user, mostCommonWords: userMostCommonWords))
         }
         return mostCommonWords
     }
