@@ -10,6 +10,6 @@ public enum Frequency: Codable {
     case month
     case week
     case day
-    case dayOfWeek
+    case weekday
     case hour
 }

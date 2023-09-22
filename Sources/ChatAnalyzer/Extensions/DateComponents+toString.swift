@@ -30,11 +30,11 @@ extension DateComponents {
                 return ""
             }
             return "\(day)/\(month)/\(year)"
-        case .dayOfWeek:
+        case .weekday:
             guard let weekday = self.weekday else {
                 return ""
             }
-            return String(weekday)
+            return Calendar.current.weekdaySymbols[weekday - 1]
         case .hour:
             guard let hour = self.hour else {
                 return ""
