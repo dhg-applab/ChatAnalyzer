@@ -39,7 +39,13 @@ extension DateComponents {
             guard let hour = self.hour else {
                 return ""
             }
-            return String(hour)
+            if hour == 0 {
+                return "00-01"
+            } else if hour == 23 {
+                return "23-24"
+            } else {
+                return String(format: "%02d-%02d", hour, hour+1)
+            }
         }
     }
 }
