@@ -120,17 +120,17 @@ extension ChatAnalyzer {
             let date: DateComponents
             switch frequency {
             case .year:
-                date = calendar.dateComponents([.year], from: message.timestamp)
+                date = calendar.dateComponents([.calendar, .year], from: message.timestamp)
             case .month:
-                date = calendar.dateComponents([.year, .month], from: message.timestamp)
+                date = calendar.dateComponents([.calendar, .year, .month], from: message.timestamp)
             case .week:
-                date = calendar.dateComponents([.year, .weekOfYear], from: message.timestamp)
+                date = calendar.dateComponents([.calendar, .year, .weekOfYear], from: message.timestamp)
             case .day:
-                date = calendar.dateComponents([.year, .month, .day], from: message.timestamp)
+                date = calendar.dateComponents([.calendar, .year, .month, .day], from: message.timestamp)
             case .weekday:
-                date = calendar.dateComponents([.weekday], from: message.timestamp)
+                date = calendar.dateComponents([.calendar, .weekday], from: message.timestamp)
             case .hour:
-                date = calendar.dateComponents([.hour], from: message.timestamp)
+                date = calendar.dateComponents([.calendar, .hour], from: message.timestamp)
             }
             guard let sentimentLabel = message.sentimentLabel else {
                 throw ChatAnalyzerError.sentimentNotAnalyzed

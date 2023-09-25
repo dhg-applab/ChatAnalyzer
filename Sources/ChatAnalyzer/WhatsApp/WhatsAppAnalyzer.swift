@@ -176,17 +176,17 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         
         switch frequency {
         case .year:
-            dates = filteredData.map { calendar.dateComponents([.year], from: $0.timestamp) }
+            dates = filteredData.map { calendar.dateComponents([.calendar, .year], from: $0.timestamp) }
         case .month:
-            dates = filteredData.map { calendar.dateComponents([.year, .month], from: $0.timestamp) }
+            dates = filteredData.map { calendar.dateComponents([.calendar, .year, .month], from: $0.timestamp) }
         case .week:
-            dates = filteredData.map { calendar.dateComponents([.year, .weekOfYear], from: $0.timestamp) }
+            dates = filteredData.map { calendar.dateComponents([.calendar, .year, .weekOfYear], from: $0.timestamp) }
         case .day:
-            dates = filteredData.map { calendar.dateComponents([.year, .month, .day], from: $0.timestamp) }
+            dates = filteredData.map { calendar.dateComponents([.calendar, .year, .month, .day], from: $0.timestamp) }
         case .weekday:
-            dates = filteredData.map { calendar.dateComponents([.weekday], from: $0.timestamp) }
+            dates = filteredData.map { calendar.dateComponents([.calendar, .weekday], from: $0.timestamp) }
         case .hour:
-            dates = filteredData.map { calendar.dateComponents([.hour], from: $0.timestamp) }
+            dates = filteredData.map { calendar.dateComponents([.calendar, .hour], from: $0.timestamp) }
         }
         
         let messageCounts = dates.reduce(into: [:]) { counts, date in
@@ -212,17 +212,17 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         for frequency in frequencies {
             switch frequency {
             case .year:
-                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.year], from: $0.timestamp) }
+                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .year], from: $0.timestamp) }
             case .month:
-                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.year, .month], from: $0.timestamp) }
+                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .year, .month], from: $0.timestamp) }
             case .week:
-                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.year, .weekOfYear], from: $0.timestamp) }
+                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .year, .weekOfYear], from: $0.timestamp) }
             case .day:
-                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.year, .month, .day], from: $0.timestamp) }
+                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .year, .month, .day], from: $0.timestamp) }
             case .weekday:
-                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.weekday], from: $0.timestamp) }
+                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .weekday], from: $0.timestamp) }
             case .hour:
-                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.hour], from: $0.timestamp) }
+                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .hour], from: $0.timestamp) }
             }
         }
         
