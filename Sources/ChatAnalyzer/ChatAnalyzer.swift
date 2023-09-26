@@ -190,8 +190,8 @@ extension ChatAnalyzer {
         let sortedMessages = messages.sorted { $0.timestamp < $1.timestamp }
         for message in sortedMessages {
             if message.user == user {
-                if replied, let lastMessageTime = lastMessageTime {
-                    replyTime += message.timestamp.distance(to: lastMessageTime)
+                if !replied, let lastMessageTime = lastMessageTime {
+                    replyTime += abs(message.timestamp.distance(to: lastMessageTime))
                     numReplies += 1
                     replied = true
                 }
