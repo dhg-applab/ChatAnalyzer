@@ -429,6 +429,28 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         let textMessages = filteredData.map { $0 as! TextMessage }
         return try WhatsAppAnalyzer.calculateChatDuration(messages: textMessages)
     }
+    
+    public func chatDurationByUser() throws -> [String: DateInterval] {
+        var chatDuration = [String: DateInterval]()
+        for user in self.uniqueUsers() {
+            chatDuration[user] = try self.chatDuration(user: user)
+        }
+        return chatDuration
+    }
+    
+    public func averageMessageLength(user: String? = nil, startTime: Date? = nil, endTime: Date? = nil) throws -> Double {
+        let filteredData = try self.filterMessage(user: user, messageType: .text, startTime: startTime, endTime: endTime)
+        let messages = filteredData.map { ($0 as! TextMessage).message }
+        return try WhatsAppAnalyzer.calculateAverageMessageLength(messages: messages)
+    }
+    
+    public func averageMessageLengthByUser(startTime: Date? = nil, endTime: Date? = nil) throws -> [String: Double] {
+        var averageMessageLength = [String: Double]()
+        for user in self.uniqueUsers() {
+            averageMessageLength[user] = try self.averageMessageLength(user: user, startTime: startTime, endTime: endTime)
+        }
+        return averageMessageLength
+    }
 }
 
 public enum WhatsAppAnalyzerError: Error {
