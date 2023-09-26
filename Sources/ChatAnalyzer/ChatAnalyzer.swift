@@ -49,6 +49,8 @@ public protocol ChatAnalyzer {
     func chatDurationByUser() throws -> [String: DateInterval]
     func averageMessageLength(user: String?, startTime: Date?, endTime: Date?) throws -> Double
     func averageMessageLengthByUser(startTime: Date?, endTime: Date?) throws -> [String: Double]
+    func averageReplyTime(user: String, startTime: Date?, endTime: Date?) throws -> TimeInterval
+    func averageReplyTimeByUser(startTime: Date?, endTime: Date?) throws -> [String: TimeInterval]
 }
 
 extension ChatAnalyzer {
@@ -177,6 +179,33 @@ extension ChatAnalyzer {
         let totalLength = messages.reduce(0, { $0 + $1.count })
         let averageLength = Double(totalLength) / Double(messages.count)
         return averageLength
+    }
+    
+    static func calculateAverageReplyTime(messages: [TextMessage], user: String) throws -> TimeInterval {
+        var replyTime = 0.0
+        var numReplies = 0
+        var lastMessageTime: Date? = nil
+        var replied = false
+        
+        let sortedMessages = messages.sorted { $0.timestamp < $1.timestamp }
+        for message in sortedMessages {
+            if message.user == user {
+                if replied, let lastMessageTime = lastMessageTime {
+                    replyTime += message.timestamp.distance(to: lastMessageTime)
+                    numReplies += 1
+                    replied = true
+                }
+            } else {
+                lastMessageTime = message.timestamp
+                replied = false
+            }
+        }
+        
+        if numReplies == 0 {
+            throw ChatAnalyzerError.noTextMessage
+        }
+        
+        return replyTime / Double(numReplies)
     }
 }
 
