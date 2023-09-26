@@ -45,6 +45,8 @@ public protocol ChatAnalyzer {
     func analyzeSentimentByFrequency(frequencies: [Frequency], user: String?, startTime: Date?, endTime: Date?) throws -> Dictionary<Frequency, [(date: DateComponents, sentimentCounts: [(sentiment: String, count: Int)])]>
     func longestMessage(user: String?, startTime: Date?, endTime: Date?) throws -> Int
     func longestMessageByUser(startTime: Date?, endTime: Date?) throws -> [String: Int]
+    func chatDuration(user: String?) throws -> DateInterval
+    func chatDurationByUser() throws -> [String: DateInterval]
 }
 
 extension ChatAnalyzer {
