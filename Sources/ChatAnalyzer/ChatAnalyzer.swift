@@ -47,6 +47,8 @@ public protocol ChatAnalyzer {
     func longestMessageByUser(startTime: Date?, endTime: Date?) throws -> [String: Int]
     func chatDuration(user: String?) throws -> DateInterval
     func chatDurationByUser() throws -> [String: DateInterval]
+    func averageMessageLength(user: String?, startTime: Date?, endTime: Date?) throws -> Double
+    func averageMessageLengthByUser(startTime: Date?, endTime: Date?) throws -> [String: Double]
 }
 
 extension ChatAnalyzer {
@@ -166,6 +168,15 @@ extension ChatAnalyzer {
         } else {
             throw ChatAnalyzerError.noTextMessage
         }
+    }
+    
+    static func calculateAverageMessageLength(messages: [String]) throws -> Double {
+        if messages.count == 0 {
+            return 0
+        }
+        let totalLength = messages.reduce(0, { $0 + $1.count })
+        let averageLength = Double(totalLength) / Double(messages.count)
+        return averageLength
     }
 }
 
