@@ -106,7 +106,7 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         return users.contains(user)
     }
     
-    private func filterMessage(user: String?, messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> [any ChatMessage] {
+    private func filterMessage(user: String? = nil, messageType: MessageType? = nil, startTime: Date? = nil, endTime: Date? = nil) throws -> [any ChatMessage] {
         if let user = user {
             if !self.userInChat(user: user) {
                 throw ChatAnalyzerError.userNotFound
@@ -404,6 +404,24 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         }
         
         return sentimentCountByFrequency
+    }
+    
+    public func longestMessage(user: String? = nil, startTime: Date? = nil, endTime: Date? = nil) throws -> Int {
+        let filteredData = try self.filterMessage(user: user, messageType: .text, startTime: startTime, endTime: endTime)
+        let messages = filteredData.map { ($0 as! TextMessage).message }
+        if let longestMessage = messages.max(by: { $0.count < $1.count }) {
+            return longestMessage.count
+        } else {
+            return 0
+        }
+    }
+    
+    public func longestMessageByUser(startTime: Date? = nil, endTime: Date? = nil) throws -> [String: Int] {
+        var longestMessage = [String: Int]()
+        for user in self.uniqueUsers() {
+            longestMessage[user] = try self.longestMessage(user: user)
+        }
+        return longestMessage
     }
 }
 
