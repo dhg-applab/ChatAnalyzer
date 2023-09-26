@@ -155,6 +155,16 @@ extension ChatAnalyzer {
         
         return sentimentFrequencies
     }
+    
+    static func calculateChatDuration(messages: [TextMessage]) throws -> DateInterval {
+        let sortedMessages = messages.sorted { $0.timestamp < $1.timestamp }
+        if let firstMessage = sortedMessages.first,
+           let lastMessage = sortedMessages.last {
+            return DateInterval(start: firstMessage.timestamp, end: lastMessage.timestamp)
+        } else {
+            throw ChatAnalyzerError.noTextMessage
+        }
+    }
 }
 
 public enum ChatAnalyzerError: Error {
@@ -169,6 +179,7 @@ public enum ChatAnalyzerError: Error {
     case loadStopWordsFailed
     case sentimentAnalysisFailed
     case sentimentNotAnalyzed
+    case noTextMessage
 }
 
 extension ChatAnalyzerError: LocalizedError {
@@ -196,6 +207,8 @@ extension ChatAnalyzerError: LocalizedError {
             return NSLocalizedString("Failed to perform sentiment analysis.", comment: "Sentiment Analysis Failed")
         case .sentimentNotAnalyzed:
             return NSLocalizedString("The sentiments aren't analyzed.", comment: "Sentiment Not Analyzed")
+        case .noTextMessage:
+            return NSLocalizedString("No text message in the chat.", comment: "No Text Message")
         }
     }
 }

@@ -423,6 +423,12 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         }
         return longestMessage
     }
+    
+    public func chatDuration(user: String? = nil) throws -> DateInterval {
+        let filteredData = try self.filterMessage(user: user, messageType: .text)
+        let textMessages = filteredData.map { $0 as! TextMessage }
+        return try WhatsAppAnalyzer.calculateChatDuration(messages: textMessages)
+    }
 }
 
 public enum WhatsAppAnalyzerError: Error {
