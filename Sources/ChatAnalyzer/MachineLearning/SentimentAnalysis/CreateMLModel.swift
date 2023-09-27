@@ -16,8 +16,8 @@ class CreateMLModel: SentimentModel {
         let mlModel: MLModel
         
         switch modelType {
-        case .StaticSST2:
-            mlModel = try StaticSST2(configuration: MLModelConfiguration()).model
+        case .BERTSST2:
+            mlModel = try BERTSST2(configuration: MLModelConfiguration()).model
         default:
             throw SentimentModelError.modelNotFound
         }

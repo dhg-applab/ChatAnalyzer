@@ -6,6 +6,6 @@
 //
 
 enum SentimentModelType {
-    case StaticSST2
+    case BERTSST2
     case BiLSTM
 }

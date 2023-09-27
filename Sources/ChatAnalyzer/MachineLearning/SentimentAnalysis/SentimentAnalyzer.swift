@@ -14,8 +14,8 @@ class SentimentAnalyzer {
 
     init(modelType: SentimentModelType) throws {
         switch modelType {
-        case .StaticSST2:
-            sentimentModel = try CreateMLModel(modelType: .StaticSST2)
+        case .BERTSST2:
+            sentimentModel = try CreateMLModel(modelType: .BERTSST2)
         case .BiLSTM:
             sentimentModel = try DNNModel(modelType: .BiLSTM)
             throw SentimentAnalyzerError.modelNotFound

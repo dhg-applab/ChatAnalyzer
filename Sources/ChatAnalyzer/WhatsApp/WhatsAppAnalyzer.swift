@@ -359,7 +359,7 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
     }
     
     public func analyzeSentiment() throws -> [any ChatMessage] {
-        let sentimentAnalyzer = try SentimentAnalyzer(modelType: .StaticSST2)
+        let sentimentAnalyzer = try SentimentAnalyzer(modelType: .BERTSST2)
         for i in 0..<self.chatData.messages.count {
             if self.chatData.messages[i].messageType == .text {
                 var textMessage = self.chatData.messages[i] as! TextMessage

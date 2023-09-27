@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "ChatAnalyzer",
     platforms: [
-        .iOS(.v16)
+        .iOS(.v17)
     ],
     products: [
         .library(name: "ChatAnalyzer", targets: ["ChatAnalyzer"])
