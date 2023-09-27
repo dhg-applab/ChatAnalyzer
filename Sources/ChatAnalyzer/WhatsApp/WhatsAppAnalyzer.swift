@@ -88,7 +88,7 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
             return chatData
         } catch {
             os_log("Failed to extract WhatsApp chat data: %@", type: .error, error.localizedDescription)
-            throw ChatAnalyzerError.extractDataFailed
+            throw error
         }
     }
     
