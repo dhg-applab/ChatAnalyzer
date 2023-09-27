@@ -33,4 +33,6 @@ struct WhatsAppConstants {
     static let locationPattern = #/^(.*?) \((.*?)\):\shttps://maps\.google\.com/\?q=(-?\d+\.\d+),(-?\d+\.\d+)$/#
     static let pollPattern = #/^POLL:\n(.+)\n((?:OPTION: .+ \(\d+ vote[s]?\)\n?){2,})$/#
     static let pollOptionPattern = #/OPTION: (.+) \((\d+) votes?\)/#
+    
+    static let messageLengthBrackets = [0..<5, 5..<10, 10..<15, 15..<20, 20..<25, 25..<30, 30..<35, 35..<40]
 }

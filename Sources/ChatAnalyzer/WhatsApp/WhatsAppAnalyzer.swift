@@ -449,6 +449,45 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         return longestMessage
     }
     
+    public func messageLengthCount(user: String? = nil, startTime: Date? = nil, endTime: Date? = nil) throws -> [(length: String, count: Int)] {
+        let filteredData = try self.filterMessage(user: user, messageType: .text, startTime: startTime, endTime: endTime)
+        let messages = filteredData.map { ($0 as! TextMessage).message }
+        
+        var lengthCount = [Range<Int>: Int]()
+        var longMessageCount = 0
+        
+        for message in messages {
+            let wordCount = message.wordCount
+            var match = false
+            for bracket in WhatsAppConstants.messageLengthBrackets {
+                if bracket.contains(wordCount) {
+                    lengthCount[bracket, default: 0] += 1
+                    match = true
+                    break
+                }
+            }
+            if !match {
+                longMessageCount += 1
+            }
+        }
+        
+        var messageLengthCount = lengthCount
+            .sorted { $0.key.lowerBound < $1.key.lowerBound }
+            .map { range, count in
+                (length: "\(range.lowerBound)-\(range.upperBound)", count: count)
+            }
+        messageLengthCount.append((length: ">=40", count: longMessageCount))
+        return messageLengthCount
+    }
+    
+    public func messageLengthCountByUser(startTime: Date? = nil, endTime: Date? = nil) throws -> Dictionary<String, [(length: String, count: Int)]> {
+        var messageLengthCount = [String: [(length: String, count: Int)]]()
+        for user in self.uniqueUsers() {
+            messageLengthCount[user] = try self.messageLengthCount(user: user, startTime: startTime, endTime: endTime)
+        }
+        return messageLengthCount
+    }
+    
     public func chatDuration(user: String? = nil) throws -> DateInterval {
         let filteredData = try self.filterMessage(user: user, messageType: .text)
         let textMessages = filteredData.map { $0 as! TextMessage }
