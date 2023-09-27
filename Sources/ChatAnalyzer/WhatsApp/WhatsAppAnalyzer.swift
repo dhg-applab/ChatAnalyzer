@@ -358,6 +358,23 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         return mostCommonEmojis
     }
     
+    public func metadata(user: String?, startTime: Date?, endTime: Date?) throws -> WhatsAppMetadata {
+        let numberOfMessages = try self.messageCount(user: user, startTime: startTime, endTime: endTime)
+        let numberOfTexts = try self.messageCount(user: user, messageType: .text, startTime: startTime, endTime: endTime)
+        let numberOfPhotos = try self.messageCount(user: user, messageType: .photo, startTime: startTime, endTime: endTime)
+        let numberOfVideos = try self.messageCount(user: user, messageType: .video, startTime: startTime, endTime: endTime)
+        let numberOfVoiceMessages = try self.messageCount(user: user, messageType: .voiceMessage, startTime: startTime, endTime: endTime)
+        let numberOfStickers = try self.messageCount(user: user, messageType: .sticker, startTime: startTime, endTime: endTime)
+        let numberOfEmojis = try self.emojiCount(user: user, startTime: startTime, endTime: endTime)
+        let numberOfFiles = try self.messageCount(user: user, messageType: .file, startTime: startTime, endTime: endTime)
+        let numberOfViewOncePhotos = try self.messageCount(user: user, messageType: .viewOncePhoto, startTime: startTime, endTime: endTime)
+        let numberOfViewOnceVideos = try self.messageCount(user: user, messageType: .viewOnceVideo, startTime: startTime, endTime: endTime)
+        let numberOfLocations = try self.messageCount(user: user, messageType: .location, startTime: startTime, endTime: endTime)
+        let numberOfContacts = try self.messageCount(user: user, messageType: .contact, startTime: startTime, endTime: endTime)
+        let numberOfPolls = try self.messageCount(user: user, messageType: .poll, startTime: startTime, endTime: endTime)
+        return WhatsAppMetadata(numberOfUsers: self.chatData.metadata.numberOfUsers, numberOfMessages: numberOfMessages, numberOfTexts: numberOfTexts, numberOfPhotos: numberOfPhotos, numberOfVideos: numberOfVideos, numberOfVoiceMessages: numberOfVoiceMessages, numberOfStickers: numberOfStickers, numberOfEmojis: numberOfEmojis, numberOfFiles: numberOfFiles, numberOfViewOncePhotos: numberOfViewOncePhotos, numberOfViewOnceVideos: numberOfVideos, numberOfLocations: numberOfLocations, numberOfContacts: numberOfContacts, numberOfPolls: numberOfPolls)
+    }
+    
     public func analyzeSentiment() throws -> [any ChatMessage] {
         let sentimentAnalyzer = try SentimentAnalyzer(modelType: .BERTSST2)
         for i in 0..<self.chatData.messages.count {
