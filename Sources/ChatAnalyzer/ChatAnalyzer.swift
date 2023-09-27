@@ -41,6 +41,7 @@ public protocol ChatAnalyzer {
     func mostCommonEmojis(n: Int, user: String?, startTime: Date?, endTime: Date?) throws -> [(emoji: Character, count: Int)]
     func mostCommonEmojisByUser(n: Int, startTime: Date?, endTime: Date?) throws -> Dictionary<String, [(emoji: Character, count: Int)]>
     func metadata(user: String?, startTime: Date?, endTime: Date?) throws -> ChatDataType.ChatMetadataType
+    func metadataByUser(startTime: Date?, endTime: Date?) throws -> Dictionary<String, ChatDataType.ChatMetadataType>
     func analyzeSentiment() throws -> [any ChatMessage]
     func analyzeSentimentByFrequency(frequency: Frequency, user: String?, startTime: Date?, endTime: Date?) throws -> [(date: DateComponents, sentimentCounts: [(sentiment: String, count: Int)])]
     func analyzeSentimentByFrequency(frequencies: [Frequency], user: String?, startTime: Date?, endTime: Date?) throws -> Dictionary<Frequency, [(date: DateComponents, sentimentCounts: [(sentiment: String, count: Int)])]>

@@ -375,6 +375,14 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         return WhatsAppMetadata(numberOfUsers: self.chatData.metadata.numberOfUsers, numberOfMessages: numberOfMessages, numberOfTexts: numberOfTexts, numberOfPhotos: numberOfPhotos, numberOfVideos: numberOfVideos, numberOfVoiceMessages: numberOfVoiceMessages, numberOfStickers: numberOfStickers, numberOfEmojis: numberOfEmojis, numberOfFiles: numberOfFiles, numberOfViewOncePhotos: numberOfViewOncePhotos, numberOfViewOnceVideos: numberOfViewOnceVideos, numberOfLocations: numberOfLocations, numberOfContacts: numberOfContacts, numberOfPolls: numberOfPolls)
     }
     
+    public func metadataByUser(startTime: Date?, endTime: Date?) throws -> Dictionary<String, WhatsAppMetadata> {
+        var metadatas = [String: WhatsAppMetadata]()
+        for user in self.uniqueUsers() {
+            metadatas[user] = try self.metadata(user: user, startTime: startTime, endTime: endTime)
+        }
+        return metadatas
+    }
+    
     public func analyzeSentiment() throws -> [any ChatMessage] {
         let sentimentAnalyzer = try SentimentAnalyzer(modelType: .BERTSST2)
         for i in 0..<self.chatData.messages.count {
