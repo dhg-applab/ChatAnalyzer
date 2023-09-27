@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum Frequency: CaseIterable, Codable, CustomStringConvertible {
+public enum Frequency: String, CaseIterable, Codable, CustomStringConvertible, CodingKey {
     case year
     case month
     case week
