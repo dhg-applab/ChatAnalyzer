@@ -100,28 +100,24 @@ extension ChatAnalyzer {
         }
     }
     
-    static func tokenize(messages: [String], language: NLLanguage, removeStopWords: Bool = false) throws -> [String] {
+    static func tokenize(messages: [String], language: NLLanguage, removeStopWords: Bool = false, removeEmojis: Bool = false) throws -> [String] {
         let tokenizer = NLTokenizer(unit: .word)
+        let stopWords: [String]? = removeStopWords ? try Self.getStopWords(language: language) : nil
         
         let messagesJoined = messages.joined(separator: " ")
         tokenizer.string = messagesJoined
         
         var words = [String]()
-        if removeStopWords {
-            let stopWords = try Self.getStopWords(language: language)
-            tokenizer.enumerateTokens(in: messagesJoined.startIndex..<messagesJoined.endIndex) { tokenRange, _ in
-                let word = String(messagesJoined[tokenRange])
-                if !stopWords.contains(word) {
+        tokenizer.enumerateTokens(in: messagesJoined.startIndex..<messagesJoined.endIndex) { tokenRange, _ in
+            let word = String(messagesJoined[tokenRange])
+            if let stopWords = stopWords, stopWords.contains(word) {} else {
+                if !(removeEmojis && word.containsOnlyEmoji) {
                     words.append(word)
                 }
-                return true
             }
-        } else {
-            tokenizer.enumerateTokens(in: messagesJoined.startIndex..<messagesJoined.endIndex) { tokenRange, _ in
-                words.append(String(messagesJoined[tokenRange]))
-                return true
-            }
+            return true
         }
+
         return words
     }
     
