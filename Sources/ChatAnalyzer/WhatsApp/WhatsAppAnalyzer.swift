@@ -282,7 +282,7 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
     public func mostCommonWords(n: Int, removeStopWords: Bool = false, user: String?, startTime: Date?, endTime: Date?) throws -> [(word: String, count: Int)] {
         let filteredData = try self.filterMessage(user: user, messageType: .text, startTime: startTime, endTime: endTime)
         let messages = filteredData.map { ($0 as! TextMessage).message }
-        let words = try WhatsAppAnalyzer.tokenize(messages: messages, language: self.language, removeStopWords: removeStopWords)
+        let words = try WhatsAppAnalyzer.tokenize(messages: messages, language: self.language, removeStopWords: removeStopWords, removeEmojis: true)
         let wordCounts = words.reduce(into: [:]) { counts, word in
             counts[word, default: 0] += 1
         }
