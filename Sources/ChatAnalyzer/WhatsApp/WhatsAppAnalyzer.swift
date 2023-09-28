@@ -250,31 +250,31 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         return messageCounts
     }
     
-    public func wordCount(removeStopWords: Bool = false, user: String?, startTime: Date?, endTime: Date?) throws -> Int {
+    public func wordCount(removeStopWords: Bool = false, removeEmojis: Bool = true, user: String?, startTime: Date?, endTime: Date?) throws -> Int {
         let filteredData = try self.filterMessage(user: user, messageType: .text, startTime: startTime, endTime: endTime)
         let messages = filteredData.map { ($0 as! TextMessage).message }
-        return try WhatsAppAnalyzer.tokenize(messages: messages, language: self.language, removeStopWords: removeStopWords).count
+        return try WhatsAppAnalyzer.tokenize(messages: messages, language: self.language, removeStopWords: removeStopWords, removeEmojis: removeEmojis).count
     }
     
-    public func wordCountByUser(removeStopWords: Bool = false, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int> {
+    public func wordCountByUser(removeStopWords: Bool = false, removeEmojis: Bool = true, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int> {
         var wordCount = [String: Int]()
         for user in self.uniqueUsers() {
-            wordCount[user] = try self.wordCount(user: user, startTime: startTime, endTime: endTime)
+            wordCount[user] = try self.wordCount(removeStopWords: removeStopWords, removeEmojis: removeEmojis, user: user, startTime: startTime, endTime: endTime)
         }
         return wordCount
     }
     
-    public func uniqueWordCount(removeStopWords: Bool = false, user: String?, startTime: Date?, endTime: Date?) throws -> Int {
+    public func uniqueWordCount(removeStopWords: Bool = false, removeEmojis: Bool = true, user: String?, startTime: Date?, endTime: Date?) throws -> Int {
         let filteredData = try self.filterMessage(user: user, messageType: .text, startTime: startTime, endTime: endTime)
         let messages = filteredData.map { ($0 as! TextMessage).message }
-        let uniqueWords = Set(try WhatsAppAnalyzer.tokenize(messages: messages, language: self.language, removeStopWords: removeStopWords))
+        let uniqueWords = Set(try WhatsAppAnalyzer.tokenize(messages: messages, language: self.language, removeStopWords: removeStopWords, removeEmojis: removeEmojis))
         return uniqueWords.count
     }
     
-    public func uniqueWordCountByUser(removeStopWords: Bool = false, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int> {
+    public func uniqueWordCountByUser(removeStopWords: Bool = false, removeEmojis: Bool = true, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int> {
         var uniqueWordCount = [String: Int]()
         for user in self.uniqueUsers() {
-            uniqueWordCount[user] = try self.uniqueWordCount(user: user, startTime: startTime, endTime: endTime)
+            uniqueWordCount[user] = try self.uniqueWordCount(removeStopWords: removeStopWords, removeEmojis: removeEmojis, user: user, startTime: startTime, endTime: endTime)
         }
         return uniqueWordCount
     }

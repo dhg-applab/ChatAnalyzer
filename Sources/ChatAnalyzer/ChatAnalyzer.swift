@@ -28,10 +28,10 @@ public protocol ChatAnalyzer {
     func messageCountByFrequencyByUser(frequency: Frequency, messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Dictionary<DateComponents, Int>>
     func messageCountByFrequency(frequencies: [Frequency], user: String?, messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<Frequency, [(date: DateComponents, count: Int)]>
     func messageCountByFrequencyByUser(frequencies: [Frequency], messageType: MessageType?, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Dictionary<Frequency, [(date: DateComponents, count: Int)]>>
-    func wordCount(removeStopWords: Bool, user: String?, startTime: Date?, endTime: Date?) throws -> Int
-    func wordCountByUser(removeStopWords: Bool, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int>
-    func uniqueWordCount(removeStopWords: Bool, user: String?, startTime: Date?, endTime: Date?) throws -> Int
-    func uniqueWordCountByUser(removeStopWords: Bool, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int>
+    func wordCount(removeStopWords: Bool, removeEmojis: Bool, user: String?, startTime: Date?, endTime: Date?) throws -> Int
+    func wordCountByUser(removeStopWords: Bool, removeEmojis: Bool, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int>
+    func uniqueWordCount(removeStopWords: Bool, removeEmojis: Bool, user: String?, startTime: Date?, endTime: Date?) throws -> Int
+    func uniqueWordCountByUser(removeStopWords: Bool, removeEmojis: Bool, startTime: Date?, endTime: Date?) throws -> Dictionary<String, Int>
     func mostCommonWords(n: Int, removeStopWords: Bool, user: String?, startTime: Date?, endTime: Date?) throws -> [(word: String, count: Int)]
     func mostCommonWordsByUser(n: Int, removeStopWords: Bool, startTime: Date?, endTime: Date?) throws -> [(user: String, mostCommonWords: [(word: String, count: Int)])]
     func emojiCount(user: String?, startTime: Date?, endTime: Date?) throws -> Int
