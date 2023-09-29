@@ -48,6 +48,11 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
             throw ChatAnalyzerError.chatFileNoAccess
         }
         
+        // Release access
+        defer {
+            fileURL.stopAccessingSecurityScopedResource()
+        }
+        
         // Create temporary directory
         let temporaryDirctory = FileManager.default.temporaryDirectory
             .appendingPathComponent("WhatsApp", conformingTo: .directory)
@@ -77,9 +82,6 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         } catch {
             throw ChatAnalyzerError.unzipFailed
         }
-        
-        // Release access
-        fileURL.stopAccessingSecurityScopedResource()
         
         // Extract chat data
         do {
