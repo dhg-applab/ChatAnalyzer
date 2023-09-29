@@ -46,7 +46,7 @@ class WhatsAppExtractor: ChatExtractor {
             return WhatsAppChatData(messages: chatMessages, metadata: self.metadata)
         } catch {
             os_log("Failed to read chat file", type: .debug)
-            throw ChatExtractorError.readChatFileFailed
+            throw error
         }
     }
 
