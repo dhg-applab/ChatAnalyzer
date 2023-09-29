@@ -65,13 +65,13 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         }
         
         // Cleanup
-        defer {
-            do {
-                try FileManager.default.removeItem(at: temporaryDirctory)
-            } catch {
-                os_log("Failed to remove temporary directory: %@", type: .error, error.localizedDescription)
-            }
-        }
+//        defer {
+//            do {
+//                try FileManager.default.removeItem(at: temporaryDirctory)
+//            } catch {
+//                os_log("Failed to remove temporary directory: %@", type: .error, error.localizedDescription)
+//            }
+//        }
         
         // Unzip chat data file
         let zipHelper = ZipHelper()
