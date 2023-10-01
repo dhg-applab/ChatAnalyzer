@@ -137,7 +137,7 @@ extension ChatAnalyzer {
                 date = calendar.dateComponents([.calendar, .year, .month, .day], from: message.timestamp)
             case .weekday:
                 date = calendar.dateComponents([.calendar, .weekday], from: message.timestamp)
-            case .hour:
+            case .hourOfDay:
                 date = calendar.dateComponents([.calendar, .hour], from: message.timestamp)
             }
             guard let sentimentLabel = message.sentimentLabel else {

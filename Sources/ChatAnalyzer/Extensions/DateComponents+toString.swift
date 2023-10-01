@@ -35,7 +35,7 @@ extension DateComponents {
                 return ""
             }
             return Calendar.current.weekdaySymbols[weekday - 1]
-        case .hour:
+        case .hourOfDay:
             guard let hour = self.hour else {
                 return ""
             }

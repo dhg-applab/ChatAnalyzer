@@ -13,7 +13,7 @@ public enum Frequency: String, CaseIterable, Codable, CustomStringConvertible, C
     case week
     case day
     case weekday
-    case hour
+    case hourOfDay
     
     public var description: String {
       switch self {
@@ -22,7 +22,7 @@ public enum Frequency: String, CaseIterable, Codable, CustomStringConvertible, C
       case .week: return "Week"
       case .day: return "Day"
       case .weekday: return "Weekday"
-      case .hour: return "Hour"
+      case .hourOfDay: return "Hour of day"
       }
     }
     
@@ -33,7 +33,7 @@ public enum Frequency: String, CaseIterable, Codable, CustomStringConvertible, C
         case .week: return .weekOfYear
         case .day: return .day
         case .weekday: return .weekday
-        case .hour: return .hour
+        case .hourOfDay: return .hour
         }
     }
 }
