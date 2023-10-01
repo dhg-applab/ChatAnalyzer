@@ -12,6 +12,7 @@ public enum Frequency: String, CaseIterable, Codable, CustomStringConvertible, C
     case month
     case week
     case day
+    case hour
     case weekday
     case hourOfDay
     
@@ -21,6 +22,7 @@ public enum Frequency: String, CaseIterable, Codable, CustomStringConvertible, C
       case .month: return "Month"
       case .week: return "Week"
       case .day: return "Day"
+      case .hour: return "Hour"
       case .weekday: return "Weekday"
       case .hourOfDay: return "Hour of day"
       }
@@ -32,6 +34,7 @@ public enum Frequency: String, CaseIterable, Codable, CustomStringConvertible, C
         case .month: return .month
         case .week: return .weekOfYear
         case .day: return .day
+        case .hour: return .hour
         case .weekday: return .weekday
         case .hourOfDay: return .hour
         }

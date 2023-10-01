@@ -30,6 +30,11 @@ extension DateComponents {
                 return ""
             }
             return "\(day)/\(month)/\(year)"
+        case .hour:
+            guard let hour = self.hour, let day = self.day, let month = self.month, let year = self.year else {
+                return ""
+            }
+            return "\(day)/\(month)/\(year) \(hour)"
         case .weekday:
             guard let weekday = self.weekday else {
                 return ""

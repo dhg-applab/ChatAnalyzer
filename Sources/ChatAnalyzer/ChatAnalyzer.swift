@@ -135,6 +135,8 @@ extension ChatAnalyzer {
                 date = calendar.dateComponents([.calendar, .year, .weekOfYear], from: message.timestamp)
             case .day:
                 date = calendar.dateComponents([.calendar, .year, .month, .day], from: message.timestamp)
+            case .hour:
+                date = calendar.dateComponents([.calendar, .year, .month, .day, .hour], from: message.timestamp)
             case .weekday:
                 date = calendar.dateComponents([.calendar, .weekday], from: message.timestamp)
             case .hourOfDay:

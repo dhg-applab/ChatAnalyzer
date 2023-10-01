@@ -185,6 +185,8 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
             dates = filteredData.map { calendar.dateComponents([.calendar, .year, .weekOfYear], from: $0.timestamp) }
         case .day:
             dates = filteredData.map { calendar.dateComponents([.calendar, .year, .month, .day], from: $0.timestamp) }
+        case .hour:
+            dates = filteredData.map { calendar.dateComponents([.calendar, .year, .month, .day, .hour], from: $0.timestamp) }
         case .weekday:
             dates = filteredData.map { calendar.dateComponents([.calendar, .weekday], from: $0.timestamp) }
         case .hourOfDay:
@@ -221,6 +223,8 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
                 datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .year, .weekOfYear], from: $0.timestamp) }
             case .day:
                 datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .year, .month, .day], from: $0.timestamp) }
+            case .hour:
+                datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .year, .month, .day, .hour], from: $0.timestamp) }
             case .weekday:
                 datesByFrequency[frequency] = filteredData.map { calendar.dateComponents([.calendar, .weekday], from: $0.timestamp) }
             case .hourOfDay:
