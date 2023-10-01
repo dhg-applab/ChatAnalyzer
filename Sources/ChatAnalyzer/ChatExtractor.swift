@@ -36,7 +36,7 @@ extension ChatExtractorError: LocalizedError {
         case .fileNotExist:
             return NSLocalizedString("The file does not exist.", comment: "File Not Exist")
         case .messageNotValid:
-            return NSLocalizedString("The Message is not valid.", comment: "Message Not Valid")
+            return NSLocalizedString("The message is not valid.", comment: "Message Not Valid")
         case .readChatFileFailed:
             return NSLocalizedString("Failed to read chat file.", comment: "Read Chat File Failed")
         }
