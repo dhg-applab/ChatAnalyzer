@@ -25,29 +25,20 @@ class CreateMLModel: SentimentModel {
         sentimentPredictor = try NLModel(mlModel: mlModel)
     }
     
-    func analyzeSentiment(for text: String) -> String? {
-        guard let predictedLabel = sentimentPredictor.predictedLabel(for: text) else {
-            return nil
-        }
+    func analyzeSentiment(for text: String) throws -> String {
+        let predictedLabel = sentimentPredictor.predictedLabel(for: text)
         switch predictedLabel {
         case "positive":
             return "Positive"
         case "negative":
             return "Negative"
         default:
-            return nil
+            throw SentimentModelError.predictionFailed
         }
     }
     
-    func analyzeSentiment(for texts: [String]) -> [String] {
-        var predictedLabels = [String]()
-        for text in texts {
-            if let predictedLabel = self.analyzeSentiment(for: text) {
-                predictedLabels.append(predictedLabel)
-            } else {
-                predictedLabels.append("None")
-            }
-        }
+    func analyzeSentiment(for texts: [String]) throws -> [String] {
+        let predictedLabels = try texts.map { try self.analyzeSentiment(for: $0) }
         return predictedLabels
     }
 }

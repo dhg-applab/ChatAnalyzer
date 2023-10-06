@@ -394,7 +394,7 @@ public class WhatsAppAnalyzer: ChatAnalyzer {
         for i in 0..<self.chatData.messages.count {
             if self.chatData.messages[i].messageType == .text {
                 var textMessage = self.chatData.messages[i] as! TextMessage
-                textMessage.sentimentLabel = sentimentAnalyzer.analyzeSentiment(for: textMessage)
+                textMessage.sentimentLabel = try sentimentAnalyzer.analyzeSentiment(for: textMessage)
                 self.chatData.messages[i] = textMessage
             }
         }

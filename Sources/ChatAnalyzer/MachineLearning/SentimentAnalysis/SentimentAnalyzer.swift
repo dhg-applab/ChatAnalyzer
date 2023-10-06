@@ -22,31 +22,43 @@ class SentimentAnalyzer {
         }
     }
     
-    func analyzeSentiment(for message: any ChatMessage) -> String {
+    func analyzeSentiment(for message: any ChatMessage) throws -> String {
         let textMessage = message as! TextMessage
-        if let sentimentLabel = sentimentModel.analyzeSentiment(for: textMessage.message) {
-            return sentimentLabel
-        } else {
-            return "None"
+        do {
+            return try sentimentModel.analyzeSentiment(for: textMessage.message)
+        } catch {
+            throw SentimentAnalyzerError.predictionFailed
         }
     }
     
-    func analyzeSentiment(for texts: [String]) -> [String] {
-        return sentimentModel.analyzeSentiment(for: texts)
+    func analyzeSentiment(for texts: [String]) throws -> [String] {
+        do {
+            return try sentimentModel.analyzeSentiment(for: texts)
+        } catch {
+            throw SentimentAnalyzerError.predictionFailed
+        }
     }
     
-    func analyzeSentiment(for textMessages: [TextMessage]) -> [String] {
+    func analyzeSentiment(for textMessages: [TextMessage]) throws -> [String] {
         let messages = textMessages.map { $0.message }
-        let predictions = sentimentModel.analyzeSentiment(for: messages)
-        return predictions
+        do {
+            let predictions = try sentimentModel.analyzeSentiment(for: messages)
+            return predictions
+        } catch {
+            throw SentimentAnalyzerError.predictionFailed
+        }
     }
 
-    func analyzeSentiment(for chatData: some ChatData) -> [String] {
+    func analyzeSentiment(for chatData: some ChatData) throws -> [String] {
         let textMessages = chatData.messages
             .filter { $0.messageType == MessageType.text }
             .map { $0 as! TextMessage }
-        let predictions = analyzeSentiment(for: textMessages)
-        return predictions
+        do {
+            let predictions = try analyzeSentiment(for: textMessages)
+            return predictions
+        } catch {
+            throw SentimentAnalyzerError.predictionFailed
+        }
     }
 }
 
@@ -61,7 +73,7 @@ extension SentimentAnalyzerError: LocalizedError {
         case .modelNotFound:
             return NSLocalizedString("The model is not found.", comment: "Model Not Found")
         case .predictionFailed:
-            return NSLocalizedString("The prediction failed.", comment: "Prediction Failed")
+            return NSLocalizedString("Failed to predict sentiment.", comment: "Sentiment Analysis Failed")
         }
     }
 }

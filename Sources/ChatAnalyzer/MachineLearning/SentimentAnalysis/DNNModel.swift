@@ -30,7 +30,7 @@ class DNNModel: SentimentModel {
         }
     }
     
-    private func getPrediction(input: MLMultiArray) throws -> (label: String, probabilities: [String: Double])? {
+    private func getPrediction(input: MLMultiArray) -> (label: String, probabilities: [String: Double])? {
         let input = BiLSTMInput(input: input)
 
         guard let output = try? mlModel.prediction(from: input) else {
@@ -51,33 +51,24 @@ class DNNModel: SentimentModel {
         return (label: predictedLabel, probabilities: probabilities)
     }
 
-    func analyzeSentiment(for message: String) -> String? {
+    func analyzeSentiment(for message: String) throws -> String {
         let inputTokens = tokenizer.tokenize(message)
 
-        guard let inputMultiArray = try? MLMultiArray(shape: [1, sequenceLength] as [NSNumber], dataType: .int32) else {
-            return nil
-        }
+        let inputMultiArray = try MLMultiArray(shape: [1, sequenceLength] as [NSNumber], dataType: .int32)
 
         for (index, tokenId) in inputTokens.enumerated() {
             inputMultiArray[index] = NSNumber(value: tokenId)
         }
 
-        guard let prediction = try? getPrediction(input: inputMultiArray) else {
-            return nil
+        guard let prediction = getPrediction(input: inputMultiArray) else {
+            throw SentimentModelError.predictionFailed
         }
 
         return prediction.label
     }
 
-    func analyzeSentiment(for texts: [String]) -> [String] {
-        var predictedLabels = [String]()
-        for text in texts {
-            if let predictedLabel = self.analyzeSentiment(for: text) {
-                predictedLabels.append(predictedLabel)
-            } else {
-                predictedLabels.append("None")
-            }
-        }
+    func analyzeSentiment(for texts: [String]) throws -> [String] {
+        let predictedLabels = try texts.map { try self.analyzeSentiment(for: $0) }
         return predictedLabels
     }
 }
